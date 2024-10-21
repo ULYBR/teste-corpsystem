@@ -1,0 +1,10 @@
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: system123
+      MYSQL_DATABASE: vendas
+      MYSQL_USER: user
+      MYSQL_PASSWORD: system123
+    ports:
+      - "3306:3306"
