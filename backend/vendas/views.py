@@ -13,10 +13,16 @@ class VendaViewSet(viewsets.ModelViewSet):
     queryset = Venda.objects.all()
     serializer_class = VendaSerializer
 
+    # Retornar vendas em JSON (ação adicional)
+    @action(detail=False, methods=['get'])
+    def listar_vendas(self, request):
+        vendas = self._filtrar_vendas(request)
+        serializer = VendaSerializer(vendas, many=True)
+        return Response(serializer.data)
+
     # Relatório em Excel
     @action(detail=False, methods=['get'])
     def relatorio(self, request):
-        # Filtragem de vendas
         vendas = self._filtrar_vendas(request)
 
         # Exportar para Excel
