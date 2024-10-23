@@ -1,12 +1,22 @@
 from rest_framework import serializers
-from .models import Produto, GrupoProduto
+from .models import Venda, ItemVenda
 
-class GrupoProdutoSerializer(serializers.ModelSerializer):
+class ItemVendaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = GrupoProduto
-        fields = '__all__'
+        model = ItemVenda
+        fields = ['produto', 'quantidade', 'preco']
 
-class ProdutoSerializer(serializers.ModelSerializer):
+
+class VendaSerializer(serializers.ModelSerializer):
+    itens = ItemVendaSerializer(many=True)
+
     class Meta:
-        model = Produto
-        fields = '__all__'
+        model = Venda
+        fields = ['cliente', 'vendedor', 'itens']
+
+    def create(self, validated_data):
+        itens_data = validated_data.pop('itens')
+        venda = Venda.objects.create(**validated_data)
+        for item_data in itens_data:
+            ItemVenda.objects.create(venda=venda, **item_data)
+        return venda

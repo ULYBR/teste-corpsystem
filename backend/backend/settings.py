@@ -13,7 +13,10 @@ SECRET_KEY = os.getenv('SECRET_KEY', "django-insecure-hlmx%wf#==ni7(eo11f8u%7n(-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://localhost:8000']
+
+
 
 # Application definition
 
@@ -76,7 +79,10 @@ DATABASES = {
         'OPTIONS': {
             'connect_timeout': 10,
 
-        }
+        },
+        'TEST': {
+            'NAME': 'test_vendas',  # Nome do banco de dados de teste
+        },
     }
 }
 
